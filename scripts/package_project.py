@@ -9,8 +9,8 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
-    archive=ROOT.parent/'vector-can-door-alert_2026-10-15.zip'
-    excluded={'.git','.verification-venv','.verification-deps','.venv','__pycache__'}
+    archive=ROOT.parent/'vector-can-log-monitor_2026-10-15.zip'
+    excluded={'.git','.verification-venv','.verification-deps','.venv','.analysis-venv','artifacts','__pycache__','latest'}
     files=[]
     for path in sorted(ROOT.rglob('*')):
         rel=path.relative_to(ROOT)

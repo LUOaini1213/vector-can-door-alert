@@ -1,0 +1,70 @@
+{
+  "verified_at_utc": "2026-10-15T08:17:22.850886+00:00",
+  "database_scope": "Dedicated artifacts/monitor_verification.duckdb; user working database is not modified.",
+  "monitor_unit_tests": 21,
+  "monitor_unit_tests_passed": true,
+  "unit_fixture_scope": "Independently hand-authored synthetic ASC with hand-computed boundaries; not vehicle data.",
+  "demo_totals": {
+    "traces": 17,
+    "frames": 1260,
+    "events": 19,
+    "rejected_lines": 1,
+    "unknown_frames": 5,
+    "invalid_frames": 9,
+    "events_by_rule": {
+      "MESSAGE_TIMEOUT": 7,
+      "SIGNAL_INVALID": 9,
+      "SPEED_JUMP": 3
+    }
+  },
+  "all_trace_reconciliation_passed": true,
+  "independent_asc_files": 17,
+  "independent_asc_records_compared": 1260,
+  "independent_asc_scope": "python-can reference reader on accepted records; structurally rejected lines excluded from reference only.",
+  "source_physical_lines_verified": 1260,
+  "identical_reimports_skipped": 17,
+  "published_traces_unchanged_on_skip": true,
+  "ui_apptest": {
+    "status": "passed",
+    "checks": [
+      "full_trace_metrics",
+      "rule_filter",
+      "selected_event_source_anchors_and_recovery",
+      "far_recovery_outside_time_window",
+      "empty_event_window",
+      "all_scenarios_render",
+      "database_bytes_unchanged",
+      "missing_database_cli_hint_without_creation"
+    ],
+    "check_count": 8,
+    "scenario_count": 17,
+    "database_sha256_before_and_after": "1f1bf4c0ba2a1fa80deb3ec95c0c3460d141bb56f9e531dc846df639968d14e8",
+    "far_recovery_event_id": "MON01_boundaries:aeab766f109f7fcb6a8ef2f9",
+    "scope": "Streamlit AppTest with synthetic demo data; no browser visual or vehicle validation"
+  },
+  "versions": {
+    "duckdb": "1.5.6",
+    "streamlit": "1.50.0",
+    "python-can": "4.6.1"
+  },
+  "source_code_sha256": {
+    "monitor_app.py": "b419a71fec986dfbff089cf10f995d48614257603da0644e25617acdcdc8ce73",
+    "requirements-monitor.txt": "cc23da0acbbcd63be7223b7a1484f4552258e42b43af23aca5742ba659327b67",
+    "data/body_control.dbc": "9e42f6da855c8a10ea9d6741f63b75180a4071e47ee5c13b61677885f69a13b2",
+    "door_alert/protocol.py": "b747f1470c110d8c3a64445a450b4e634943fe8cdfe13b8a6f4412b4a9bc45e4",
+    "sql/monitor_schema.sql": "8e5f1c9884b226963a183d749e6d3f38c370904cb0ff8a7ebf179668cc25a7cf",
+    "can_monitor/__init__.py": "a2574735279f5612c10556a1e50540b9358259f5aa1b9c947f16525a1dc14c00",
+    "can_monitor/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "can_monitor/cli.py": "12532774c9b02ca7fd92e4f2a89b38813eba0a84ca3f2b762be6d32a37fafbc3",
+    "can_monitor/engine.py": "e8d3e6e0941421fbb174ee8c28675573e23f7a62ca73e9a905b7413b03aea0e3",
+    "can_monitor/parser.py": "3783b57867aaea67c8c60430ed39e990d41204caca10cf4d840f02f9e9727777",
+    "can_monitor/queries.py": "13c93535170f85de7bcd350dfcfe2f9488e5dde1cf4625146cf66208f507b912",
+    "can_monitor/reporting.py": "a3971912fcd4acc5078b21b219da92a71336e4e57c3e9ca77f6781926e5a3193",
+    "can_monitor/store.py": "46b9734554cac6b998d39a4539445802f006804fd304ead5efd48f3057e4c99b",
+    "tests_monitor/__init__.py": "45287a7e985f97043a93af81d4042f38ca183583e7985cc06889b08651806d40",
+    "tests_monitor/test_acceptance.py": "59d9d3f53f818a1864c5a1a7daf1a9ff17d317b6f45e3b17389e8866924f0990",
+    "scripts/check_monitor_ui.py": "786e8b9f279fec7fc7b2c7bd251a9e6bcb43b5437dd9d2de7c0dfe3a1872e6e7",
+    "scripts/verify_monitor.py": "c5e7d682e85a47375d99eb6423a7512644d64c820c709afa89aaf4ee379871f0"
+  },
+  "hardware_and_canoe_validation": "not performed"
+}

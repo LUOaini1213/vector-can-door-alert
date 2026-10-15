@@ -101,6 +101,14 @@ python -m venv .verification-venv
 运行不依赖真实时间或随机数。相同输入产生相同逻辑结果；报告生成时间会变化。
 只允许报告所列的 0x100/0x101 输入改变对应状态，未知 ID 被忽略。
 
+## 新增：日志分析与异常监控
+
+第二阶段已补充 ASC 导入、固定协议解码、三类规则、DuckDB 存储、SQL 分钟统计及中文 Streamlit 只读看板。规则为报文超时、信号无效和车速突变；选择一条事件可追溯到原 ASC 物理行，以及前序有效帧或恢复帧。
+
+Windows 双击 **`run_monitor.cmd`**；它会安装单独的可选依赖、建示例库并打开本地看板。原来的 `run_demo.cmd` 和标准库仿真仍可直接使用。
+
+完整运行方式、时间边界和限制见 [日志监控说明](docs/log_monitor/README.md)，练习顺序见 [四次小练习](docs/log_monitor/learning.md)。本次冻结报告位于 [监控报告](reports/log_monitor/2026-10-15/report.html)，独立验收见 [acceptance.json](reports/log_monitor/2026-10-15/acceptance.json)。演示仍使用仿真数据，不改变下述 CANoe/CAPL 状态。
+
 ## CANoe 演示版能做什么
 
 Vector 当前提供免费的交互式在线演示，需登录客户门户。官方 FAQ 明确表示：

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-15",
+  "target": "http://127.0.0.1:8503",
+  "browser": "Codex in-app browser",
+  "status": "passed",
+  "checks": [
+    "MON01 displayed 23 frames, 10 rule events and 1 rejected line",
+    "Speed chart rendered as sparse sample points",
+    "MESSAGE_TIMEOUT rule filter displayed 4 events",
+    "Selected 1.400001 second timeout on 0x100",
+    "Context showed last-valid frame 15 at physical line 21 and recovery frame 17 at physical line 23"
+  ],
+  "screenshot": "browser_context.jpg",
+  "scope": "Manual browser rendering and local read-only filter interaction; separate from AppTest and hardware validation"
+}

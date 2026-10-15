@@ -1,0 +1,20 @@
+﻿event_id,trace_id,rule,severity,can_id,channel,start_us,end_us,duration_us,open_at_end,frame_no,previous_frame_no,recovery_frame_no,detail
+MON01_boundaries:8bee11b9dd31743171c261ad,MON01_boundaries,SPEED_JUMP,warning,256,1,200000,200000,0,False,5,3,,Speed changed from 10 to 40 km/h over 100000 us; absolute rate 300.0 km/h/s exceeds 100.
+MON01_boundaries:48e97bb1c981b2da32c7c485,MON01_boundaries,SIGNAL_INVALID,warning,256,1,210000,210000,0,False,6,,,vehicle payload contains invalid speed or ignition
+MON01_boundaries:84ec3aadb2b59be960d1dc2a,MON01_boundaries,SIGNAL_INVALID,warning,257,1,220000,220000,0,False,7,,,door mask contains reserved bits
+MON01_boundaries:da8fda2b398ee7b5e57d3359,MON01_boundaries,MESSAGE_TIMEOUT,warning,256,1,900001,900001,0,False,11,11,13,0x100 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+MON01_boundaries:8c59a55f517906a43206b07a,MON01_boundaries,MESSAGE_TIMEOUT,warning,257,1,900001,1100000,199999,False,12,12,16,0x101 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+MON01_boundaries:f7d190fd719c98700a2f25d4,MON01_boundaries,SIGNAL_INVALID,warning,256,1,950000,950000,0,False,14,,,vehicle payload contains invalid speed or ignition
+MON01_boundaries:aeab766f109f7fcb6a8ef2f9,MON01_boundaries,MESSAGE_TIMEOUT,warning,256,1,1400001,61100000,59699999,False,15,15,17,0x100 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+MON01_boundaries:2ef1b924a275984bdd895671,MON01_boundaries,MESSAGE_TIMEOUT,warning,257,1,1400001,61100000,59699999,False,16,16,18,0x101 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+MON01_boundaries:ac1bacbb6e0a132825b556f7,MON01_boundaries,SPEED_JUMP,warning,256,1,61210000,61210000,0,False,20,19,,Speed changed from 55 to 56.01 km/h over 10000 us; absolute rate 101.00 km/h/s exceeds 100.
+MON01_boundaries:d4bfd1b3ce613d6b5f6a192d,MON01_boundaries,SPEED_JUMP,warning,256,1,61210000,61210000,0,False,22,21,,Speed changed from 56.01 to 57.01 km/h at the same timestamp; acceleration rate is undefined (dt=0 us).
+SC07:065d333e3f66c99d1aee36c9,SC07,MESSAGE_TIMEOUT,warning,256,1,300001,400000,99999,False,1,1,46,0x100 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+SC08:128c921b37c3be06f76e0be9,SC08,MESSAGE_TIMEOUT,warning,257,1,300001,400000,99999,False,2,2,47,0x101 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.
+SC10:5c733c7f99c1b53907293da6,SC10,SIGNAL_INVALID,warning,256,1,250000,250000,0,False,32,,,vehicle payload contains invalid speed or ignition
+SC11:e72afef16e0ab6d618b87859,SC11,SIGNAL_INVALID,warning,256,1,250000,250000,0,False,32,,,vehicle payload contains invalid speed or ignition
+SC12:6018fd90b9c6ee4f06776635,SC12,SIGNAL_INVALID,warning,257,1,250000,250000,0,False,32,,,door mask contains reserved bits
+SC13:1080d66a7348b6a5eedbdf73,SC13,SIGNAL_INVALID,warning,256,1,250000,250000,0,False,32,,,message must contain exactly 8 bytes
+SC15:2989c8bd1ee32626153ed7a9,SC15,SIGNAL_INVALID,warning,256,1,250000,250000,0,False,35,,,vehicle payload contains invalid speed or ignition
+SC15:7a620cc682fa6ce51e387a58,SC15,SIGNAL_INVALID,warning,256,1,300000,300000,0,False,42,,,vehicle payload contains invalid speed or ignition
+SC16:d02a2e30acc3c29024137e72,SC16,MESSAGE_TIMEOUT,warning,257,1,800001,900000,99999,False,64,64,109,0x101 channel 1 exceeded 300000 us freshness from last valid frame; a matching valid frame recovered the signal.

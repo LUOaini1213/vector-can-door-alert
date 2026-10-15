@@ -10,7 +10,7 @@ select,label{font:inherit}select{max-width:100%;padding:8px;margin:8px}.table-wr
 <h1>车门状态告警 仿真测试报告</h1><p>确定性时间轴 · CAN 报文编解码 · 需求到用例追踪</p>
 <div class="counts"><div><strong>16/16</strong>场景通过</div><div><strong>121/121</strong>断言通过</div><div><strong>12/12</strong>需求有场景映射</div></div>
 <div class="panel"><strong>本次执行环境：Python 离线仿真</strong><p>数据与阈值是教学设计。以下结果来自实际执行 Python 控制器与手工预期的对照。CAPL 尚未在 CANoe 中编译或运行，ASC 是合成报文轨迹。需求映射数量不等于生产测试覆盖率。</p>
-<small>UTC 2026-10-15T02:47:04.071730+00:00 · 版本 0.1.0 · 证据和 SHA-256 见同目录 report.json</small></div>
+<small>UTC 2026-10-15T08:17:03.351210+00:00 · 版本 0.1.0 · 证据和 SHA-256 见同目录 report.json</small></div>
 <div class="panel filters"><label>查看场景 <select id="caseFilter"><option value="all">全部</option><option value="SC01">SC01 初始缺数与首次完整输入</option><option value="SC02">SC02 5 km/h触发与200 ms精确边界</option><option value="SC03">SC03 3.01保持与3.00解除</option><option value="SC04">SC04 3到5 km/h滞回区依赖既有状态</option><option value="SC05">SC05 关门立即消警再开门重新去抖</option><option value="SC06">SC06 熄火立即消警再点火重新去抖</option><option value="SC07">SC07 车速帧丢失300 ms仍新鲜310 ms故障</option><option value="SC08">SC08 车门帧独立超时与恢复</option><option value="SC09">SC09 未知ID和其任意DLC不改变有效输入</option><option value="SC10">SC10 250.01 km/h非法速度立即失效并恢复</option><option value="SC11">SC11 非法点火值2立即失效并恢复</option><option value="SC12">SC12 车门高位非法立即失效并恢复</option><option value="SC13">SC13 短帧长帧均失效且分别恢复</option><option value="SC14">SC14 间断条件不能累加为200 ms</option><option value="SC15">SC15 同刻最后报文优先且先收后算</option><option value="SC16">SC16 缺数点火车门优先级与重复触发</option></select></label><label><input type="checkbox" id="failedOnly"> 只看失败</label></div>
 <section id="SC01" class="case" data-passed="true">
 <h2>SC01 初始缺数与首次完整输入 <span class="pass">通过</span></h2>

@@ -3,6 +3,11 @@ __pycache__/
 .venv/
 .verification-venv/
 .verification-deps/
+.analysis-venv/
+artifacts/
+reports/log_monitor/latest/
+*.duckdb
+*.duckdb.wal
 reports/latest/
 reports/mutation-check/
 *.log

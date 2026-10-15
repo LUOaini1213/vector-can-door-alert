@@ -1,0 +1,2 @@
+﻿trace_id,line_number,raw_line,reason
+MON01_boundaries,14,0.240000 1 100 Rx d 8 00 01,DLC_MISMATCH
