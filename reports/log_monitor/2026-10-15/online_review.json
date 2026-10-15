@@ -1,0 +1,38 @@
+{
+  "review_date": "2026-10-15",
+  "scope": "Official-document review, local reproductions, fixes, regression tests and browser verification of the offline CAN monitor.",
+  "primary_sources": [
+    {"url": "https://python-can.readthedocs.io/en/stable/_modules/can/io/asc.html", "version_checked": "python-can 4.6.1", "used_for": "Native ASCWriter header, metadata and 1-based ASC channels"},
+    {"url": "https://docs.streamlit.io/1.50.0/develop/api-reference/data/st.column_config/st.column_config.numbercolumn", "version_checked": "Streamlit 1.50.0", "used_for": "Explicit numeric display formats"},
+    {"url": "https://duckdb.org/docs/current/connect/concurrency", "version_checked": "DuckDB 1.5 documentation; installed 1.5.6", "used_for": "Single-process native write and cross-process read-only operating boundary"}
+  ],
+  "findings": [
+    {"id": "ASC_COMPATIBILITY", "status": "fixed", "change": "Read unmodified ASCWriter whitespace and recognized triggerblock/measurement metadata while preserving source bytes and physical lines."},
+    {"id": "UNBOUNDED_MINUTE_EXPANSION", "status": "fixed", "change": "Parser and direct API reject accepted-frame spans over 24 hours before minute expansion."},
+    {"id": "CHANNEL_CONFIGURATION", "status": "fixed", "change": "Repeatable --expected-channel selects actual 1-based ASC channels; UI displays active parameters."},
+    {"id": "TIME_DISPLAY_PRECISION", "status": "fixed", "change": "Six decimal places for seconds, three for milliseconds, and integer timestamp_us source evidence."},
+    {"id": "PROVENANCE_LABEL", "status": "fixed", "change": "User-provided unverified logs are no longer globally labeled as simulation."},
+    {"id": "PUBLISHED_LAYER_INTEGRITY", "status": "fixed", "condition": "Reproduced using deliberately modified temporary databases; no inconsistency was found in the original working demo database.", "change": "Independent SQL reconciles every minute's metrics. Inconsistent same-fingerprint publications rebuild atomically; --force also supports explicit rebuilding."},
+    {"id": "NARROW_WINDOW_READABILITY", "status": "improved", "change": "Two-by-two metric layout and time/rule/duration columns before opaque identifiers."}
+  ],
+  "verification": {
+    "monitor_unit_tests_passed": 36,
+    "controller_unit_tests_passed": 32,
+    "streamlit_apptest_checks_passed": 13,
+    "demo_traces": 17,
+    "accepted_frames": 1260,
+    "rule_events": 19,
+    "rejected_lines": 1,
+    "independent_asc_records_compared": 1260,
+    "all_trace_minute_metrics_balanced": true,
+    "browser_checked": true,
+    "browser_screenshot": "browser_online_review.jpg"
+  },
+  "assessment": "Reproducible offline learning and interview demonstration; not evidence of independent authorship, physical vehicle behavior or CANoe execution.",
+  "remaining_boundaries": [
+    "Fixed classic CAN standard-ID protocol; no arbitrary DBC or CAN FD support.",
+    "Single accepted-frame span at most 24 hours.",
+    "Native local DuckDB workflow imports first, then uses the read-only UI.",
+    "Database consistency checks do not authenticate source files or verify physical signals."
+  ]
+}

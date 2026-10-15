@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-15T08:17:22.819771+00:00",
+  "generated_at_utc": "2026-10-15T08:38:48.534422+00:00",
   "totals": {
     "traces": 17,
     "frames": 1260,
@@ -24,215 +24,215 @@
       "frame_count": 23,
       "event_count": 10,
       "rejected_line_count": 1,
-      "fingerprint": "b9d89d1252193a6fca89ec2b9377633c503d4a8f242ffdd183d4ea66637ebd06",
+      "fingerprint": "9f8976eff2c78e2c61b77f124511b60458d61ea7695c379871083c6d51799b63",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC01",
       "source_name": "SC01.asc",
-      "source_sha256": "15b5cc95ccad3c808866c4be83474fdcfd8774162d4e86255481ef6c193d774b",
+      "source_sha256": "9fa305464d93e097ff756678a0e16f34e996594756edda14887d4c803bec0c0d",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 400000,
       "frame_count": 49,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "acf72a50ad71ea270804e97e78e96ff47734a0db5445192f7d2acced72aed6c8",
+      "fingerprint": "3bf4021680697e5b259c02a88a6247c0324f239d4b42a3a125de848f766bbabb",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC02",
       "source_name": "SC02.asc",
-      "source_sha256": "3b01be12ad6a3c506010152188e6637e7c69b52f70acd3a2460df6bc123350df",
+      "source_sha256": "c25dd3441c9ca32bb8856f88639449a19d7c433c7a474c67b2fbf9f4dca525d6",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 400000,
       "frame_count": 55,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "4de07cd912b8ffb3c54792345739dd9466ba83b8aab37ebe151a5e65ea6d88ce",
+      "fingerprint": "2c839f25442ab389526ca056d535d05243a69a569ce5eab10af0e4581ddfaa5f",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC03",
       "source_name": "SC03.asc",
-      "source_sha256": "d14a5fe3afda2af03093258df63a3ae92f74183dc06c2b1ddf5dbf5d8a2679e5",
+      "source_sha256": "1e58dcfb36f03dd4f07fb2c2f8decc1a21f5ed537ca1b73193f1bbba4df3b200",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 500000,
       "frame_count": 64,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "a984a62ce81144fd9be098120c11f8535864304cf7d6e393329e2a7561ea8f28",
+      "fingerprint": "a6869cd592c4de79cd4f5b31d689be91ed40d4b0ae7e7fca01ad779a5b538226",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC04",
       "source_name": "SC04.asc",
-      "source_sha256": "b14070d8fd7aee6d64bef2ebd3375aecb3b1227bd0a4f065f9ae5be8ddfbb80b",
+      "source_sha256": "48151ef734de417aae4a7c179ae12b3e8819105ed4d856e04f433521cd6a37e9",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 800000,
       "frame_count": 100,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "eea5c4d1e40707df3309dcbd021a2e9783403e0811c4bc0aabcadc0a30b8d371",
+      "fingerprint": "90570fc2d7fbf53c936159601d592be9226694c6308ec2c293d465a406fd5a6f",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC05",
       "source_name": "SC05.asc",
-      "source_sha256": "85cb3836d6ee1353c66f575fc51dc1fdf786fe94003913e180d66538c44bb842",
+      "source_sha256": "4d6df5d4aeec27fc949d5e3f012150312a8e73f6fe2c843118655bd06429051d",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 600000,
       "frame_count": 76,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "bf1893c376d7173a63075d71eb46c7709594d8fb2c437ff56559c21c6e3f16e2",
+      "fingerprint": "7211f37d0aaea8ca0606ce7e0fc032f3ddfacafad6ff3cc88df2f0ca8fd3a2ad",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC06",
       "source_name": "SC06.asc",
-      "source_sha256": "7aca2cf0e28ea8db0fcd1af20882acf45bada054ffdfb09df8e3400247524340",
+      "source_sha256": "6da1adc7bf85e2234c6a08095b8255ddccee19c194e36623ca5aa1681880dd24",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 600000,
       "frame_count": 76,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "e438b594f139c6126e7e744594c9de8b5ebf0b1078509f29fd7083c1293f5c22",
+      "fingerprint": "ea793d4324b600cf79a532f043a098baa6b6550969ca977d968f2ed603f33485",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC07",
       "source_name": "SC07.asc",
-      "source_sha256": "465fd309d5a59f75ef7c280d03790a27f933a7fe20a2a1c7a682cbeb30cbd5f8",
+      "source_sha256": "a79c2ff5e01712f4f9fc25c790dc61ab620cfc9a96bff1dda253b5c1b2151604",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 650000,
       "frame_count": 77,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "313c0a5a05e3a05c4520f606d17e766840a56625f527e9f3042938d1b0ad669b",
+      "fingerprint": "4ac0d7dcb06b701e1c484a238cfcae348a1419436a08afa1b091608bba37696e",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC08",
       "source_name": "SC08.asc",
-      "source_sha256": "25dc256f4edf6c5fe79b5bd0ade483c26271559ba3767e259bc6e788c31acae3",
+      "source_sha256": "67e46e65f5db186b1e987e62076391b3ff0cb4d2b968337bc96bb2a76141f1a4",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 650000,
       "frame_count": 77,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "6f954ea1a5ff0dfecfb093df5a171559e967265b8bddcc1959a47b7f5d9ce590",
+      "fingerprint": "e549c026a20bb4c32fd434c376c3b7e150442b3f93d01d3af301fc7e3129d604",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC09",
       "source_name": "SC09.asc",
-      "source_sha256": "ff1f98dc53458d408078f1ea33415e0c5683d3c70f5a894245a28b5c93505d9e",
+      "source_sha256": "360ec8548e558ee4940d8a67de5c6301d9ee63fa71de058fe8a66420a17509d1",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 500000,
       "frame_count": 67,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "d96fcfd65aa2043c0ce2012c24fcb3ebe50e7d9876fc164ca6cafa585318a2b6",
+      "fingerprint": "8ecb984e711f3c64f47012a3887ebf8580a363c22efa8355abd0550f53651747",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC10",
       "source_name": "SC10.asc",
-      "source_sha256": "2a5b27466446934cc1bff085a4eadcb04eb9f08a0e4e9d67b5422bf0e5ac0226",
+      "source_sha256": "f3958c2ee5f1bbb589c996ec7ed58b1e4dbd8ad4a59161ae467e27c72d11e8f2",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 600000,
       "frame_count": 75,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "28072fa70f95c6276fc9621695355697f4376b535e98b204f64820a7d087848b",
+      "fingerprint": "fd3433c3a074c684f89be92dafd1faa8b5c284f886c39cd07286495f559c828b",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC11",
       "source_name": "SC11.asc",
-      "source_sha256": "56958c0332a352dd73b4ffcf08e5e9c9cbbc3e07424aae1c92615afdf1dadd66",
+      "source_sha256": "ed89d9fb424a4dc256034454519b57968317bbe7a37e55f266f608586d8a4548",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 600000,
       "frame_count": 75,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "9af52688ac27a948bb8eac4f3be6020361ce083a487e2d35911a02e340444a99",
+      "fingerprint": "9bb92ca9147d9b03fbf88f4eda60901a4a91e032e41b65601644943fa42dfa3e",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC12",
       "source_name": "SC12.asc",
-      "source_sha256": "d7574d5485c4f5b9bf6e1d5300deb8d30cb77aaebeba794ecec7e99ea051304d",
+      "source_sha256": "53a1d27d3a14055ec19a02453b6178e2e0103a3e169e0f0bddf7f59d545ccba2",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 600000,
       "frame_count": 75,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "a40f23881f6f831b8fe06d9875fc4908fe124dfe7e55e58d41c01e23de149e35",
+      "fingerprint": "a0579fddcde64073fb3edc187977767167ed2b65fd96f8dff59dd60da5e84978",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC13",
       "source_name": "SC13.asc",
-      "source_sha256": "4eb7b537ba0cc25549d0249bbb32606215c6fbd4c361f7755902f401db8864ac",
+      "source_sha256": "79e158750a0f88dddc483ae255e61e42dcd315863bd34d7f263962aafa496a25",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 700000,
       "frame_count": 87,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "a82570f1651cf6e4463d390e76e83839c3ee8c69f7cdc2959085ac1b631faeac",
+      "fingerprint": "e3b6c7e5e402a4b64c030943a1498178d2aa622866dfec1869cdf931345eb46c",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC14",
       "source_name": "SC14.asc",
-      "source_sha256": "f6cec38bf33d548978c201128aa62c11937183a04229431b9beb4a754cd23f1a",
+      "source_sha256": "4cabae4aa2b5d32dba4491109437300ec36b7412f91a50a7b51f94411d6b3bed",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 500000,
       "frame_count": 68,
       "event_count": 0,
       "rejected_line_count": 0,
-      "fingerprint": "0ddce0632f711edfe80666895d5f1df2c849757ba856b78f85f56f035a20d929",
+      "fingerprint": "55dd56b7247b8d832e3499ea939f490582cd68a2fa664f9ccdc2d0dbc2041f3a",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC15",
       "source_name": "SC15.asc",
-      "source_sha256": "299100c62531a0362e6134496dc0c7502e7f547d33c6e3e91ba24ec5f7c1e345",
+      "source_sha256": "652a8aba2c41adaeaecdba3504cfb3abdc7cd0e4691ba60a42e95e1d01114d2d",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 700000,
       "frame_count": 95,
       "event_count": 2,
       "rejected_line_count": 0,
-      "fingerprint": "dc850ea2ed2b222cbb0e12da649f18ae88cf9ac80260e5dee043fef0254eec0a",
+      "fingerprint": "eb37a9ba7ea341b7e9ef1955996a25156299f7ca19138c0da5c451906ac4a41b",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     },
     {
       "trace_id": "SC16",
       "source_name": "SC16.asc",
-      "source_sha256": "df259ad7d090d2b4e0d22aada1b425696b0243aca67a3c5d119cb47b3add8e5a",
+      "source_sha256": "76304baa6062f9cc2051ae029c164a0d4510a6adac43d2553cbe5b30609c7f25",
       "provenance": "synthetic",
       "start_us": 0,
       "end_us": 1000000,
       "frame_count": 121,
       "event_count": 1,
       "rejected_line_count": 0,
-      "fingerprint": "c5cb69b1a0db9f6f267028282ac7fb6725429def1d536780a955ae549b0d16c8",
+      "fingerprint": "d31f9eb469f192dc6f299d4d2537a50ee52f62bb0d3ad4464f971ab9bfe9b07e",
       "config_json": "{\"expected_channels\":[1],\"max_acceleration_kmh_s\":\"1E+2\",\"timeout_us\":300000}"
     }
   ],
@@ -758,7 +758,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC01",
@@ -767,7 +769,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC02",
@@ -776,7 +780,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC03",
@@ -785,7 +791,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC04",
@@ -794,7 +802,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC05",
@@ -803,7 +813,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC06",
@@ -812,7 +824,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC07",
@@ -821,7 +835,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC08",
@@ -830,7 +846,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC09",
@@ -839,7 +857,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC10",
@@ -848,7 +868,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC11",
@@ -857,7 +879,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC12",
@@ -866,7 +890,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC13",
@@ -875,7 +901,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC14",
@@ -884,7 +912,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC15",
@@ -893,7 +923,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     },
     {
       "trace_id": "SC16",
@@ -902,7 +934,9 @@
       "rejected_count_balanced": true,
       "timeout_duration_balanced": true,
       "event_frame_references_valid": true,
-      "event_intervals_in_log": true
+      "event_intervals_in_log": true,
+      "frame_intervals_in_log": true,
+      "minute_metrics_balanced": true
     }
   ],
   "example_event_contexts": [
@@ -2138,24 +2172,29 @@
     }
   ],
   "source_code_sha256": {
-    "monitor_app.py": "b419a71fec986dfbff089cf10f995d48614257603da0644e25617acdcdc8ce73",
+    "monitor_app.py": "bc7138abfc3f0a6bd3aa29b96c070596fa165124aba4ea5f801f2d7aba48a866",
     "requirements-monitor.txt": "cc23da0acbbcd63be7223b7a1484f4552258e42b43af23aca5742ba659327b67",
     "data/body_control.dbc": "9e42f6da855c8a10ea9d6741f63b75180a4071e47ee5c13b61677885f69a13b2",
     "door_alert/protocol.py": "b747f1470c110d8c3a64445a450b4e634943fe8cdfe13b8a6f4412b4a9bc45e4",
     "sql/monitor_schema.sql": "8e5f1c9884b226963a183d749e6d3f38c370904cb0ff8a7ebf179668cc25a7cf",
     "can_monitor/__init__.py": "a2574735279f5612c10556a1e50540b9358259f5aa1b9c947f16525a1dc14c00",
     "can_monitor/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
-    "can_monitor/cli.py": "12532774c9b02ca7fd92e4f2a89b38813eba0a84ca3f2b762be6d32a37fafbc3",
-    "can_monitor/engine.py": "e8d3e6e0941421fbb174ee8c28675573e23f7a62ca73e9a905b7413b03aea0e3",
-    "can_monitor/parser.py": "3783b57867aaea67c8c60430ed39e990d41204caca10cf4d840f02f9e9727777",
+    "can_monitor/cli.py": "aab047c0c22785578ab41708d2cd8bb1c84d31f109a253b63f656ae6a3347971",
+    "can_monitor/engine.py": "cb643c4424183dfc39ebec271af726717a3149326750e6c8718c4db9c1707bf9",
+    "can_monitor/integrity.py": "90f9be76a2d8dea73273aac41c25736582d9b2ad14d0b84ac4c2872a967c8c98",
+    "can_monitor/limits.py": "a86b2ea9cce4b388b7d9610a971009828583f89b6bf331fc89e2562b1b881a91",
+    "can_monitor/parser.py": "4ccb7b842d294f3302c43f11e5cc060d883dc5b9eae48509c2a9bd79ea5cf03b",
     "can_monitor/queries.py": "13c93535170f85de7bcd350dfcfe2f9488e5dde1cf4625146cf66208f507b912",
-    "can_monitor/reporting.py": "a3971912fcd4acc5078b21b219da92a71336e4e57c3e9ca77f6781926e5a3193",
-    "can_monitor/store.py": "46b9734554cac6b998d39a4539445802f006804fd304ead5efd48f3057e4c99b",
+    "can_monitor/reporting.py": "3b1380fe6068696b51dfd387453fe8d80649d7597353843b1790fe6514e9dfd5",
+    "can_monitor/store.py": "8e8e35e5799578341a93819b32752d5c1473047de59c2b3909ab58254c7a220f",
     "tests_monitor/__init__.py": "45287a7e985f97043a93af81d4042f38ca183583e7985cc06889b08651806d40",
-    "tests_monitor/test_acceptance.py": "59d9d3f53f818a1864c5a1a7daf1a9ff17d317b6f45e3b17389e8866924f0990",
-    "scripts/check_monitor_ui.py": "786e8b9f279fec7fc7b2c7bd251a9e6bcb43b5437dd9d2de7c0dfe3a1872e6e7",
+    "tests_monitor/test_acceptance.py": "920f1ba52b34fcc664c851e1d76e587dba6bba935aecd53a07915349a9a7cc22",
+    "tests_monitor/test_online_integrity.py": "9875d7b48f5da1cc09bec34d4505825500f6cd0a970b47c528384ce38a55ddae",
+    "tests_monitor/test_online_protocol.py": "f5ef3290581c1b39e74677eadb7b899e54bd230a09be4bae715a7f3f8aa36200",
+    "scripts/check_monitor_ui.py": "e598cfb0a49d35ab8393c9117037dd39f32b2244a32c031374672d93ee63e031",
     "scripts/verify_monitor.py": "c5e7d682e85a47375d99eb6423a7512644d64c820c709afa89aaf4ee379871f0"
   },
   "scope": "Offline fixed-protocol classic CAN ASC analysis; simulated data is explicitly labeled. No CANoe or hardware validation.",
+  "reconciliation_scope": "Independent SQL checks table counts, references and per-minute metrics; it does not authenticate source bytes or vehicle provenance.",
   "duration_semantics": "Timeout first starts at last valid us + threshold us + 1. Open intervals end at the last observed frame. Per-signal time sums may overlap."
 }

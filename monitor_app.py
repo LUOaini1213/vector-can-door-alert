@@ -6,6 +6,7 @@ The CLI creates the database; opening this app never imports or changes data.
 
 from __future__ import annotations
 
+from decimal import Decimal, InvalidOperation
 import json
 import os
 from pathlib import Path
@@ -22,8 +23,12 @@ RULE_LABELS = {
     "SPEED_JUMP": "车速突变",
     "MESSAGE_TIMEOUT": "报文超时",
 }
+PROVENANCE_LABELS = {
+    "synthetic": "教学仿真",
+    "user-provided-unverified": "用户提供，真实性未验证",
+}
 FRAME_COLUMNS = [
-    "关联角色", "frame_no", "physical_line", "日志秒", "can_id",
+    "关联角色", "frame_no", "physical_line", "日志秒", "timestamp_us", "can_id",
     "channel", "direction", "dlc", "data_hex", "decode_status",
     "speed_kmh", "ignition", "door_mask", "warning", "data_fault",
     "reason_code", "decode_error", "raw_line",
@@ -36,6 +41,33 @@ def _seconds(value: int) -> float:
 
 def _can_id(value: object) -> str:
     return "" if value is None else f"0x{int(value):03X}"
+
+
+def _frame_column_config() -> dict:
+    return {
+        "日志秒": st.column_config.NumberColumn(format="%.6f"),
+        "timestamp_us": st.column_config.NumberColumn(
+            format="%d", help="源 ASC 时间转换后的整数微秒；不经过毫秒取整。",
+        ),
+    }
+
+
+def _trace_config(trace: dict) -> dict:
+    config = trace.get("config_json", "{}")
+    if isinstance(config, str):
+        try:
+            config = json.loads(config)
+        except json.JSONDecodeError:
+            return {}
+    return config if isinstance(config, dict) else {}
+
+
+def _readable_decimal(value: object) -> str:
+    try:
+        number = Decimal(str(value))
+        return format(number, "f") if number.is_finite() else str(value)
+    except InvalidOperation:
+        return str(value)
 
 
 def _frame_table(rows: list[dict], event: dict | None = None) -> pd.DataFrame:
@@ -110,7 +142,7 @@ def _render() -> None:
         db_path = ROOT / db_path
 
     st.title("车辆日志分析与异常监控")
-    st.caption("离线学习项目 · ASC 仿真日志 · Python / DuckDB / SQL")
+    st.caption("离线学习项目 · ASC 离线日志 · Python / DuckDB / SQL")
     st.info(
         "监控事件来自教学规则；控制器 warning 是报文中的另一项输出。"
         "本项目未验证实车、物理 CAN 总线或 CANoe/CAPL，也不构成车辆故障诊断。"
@@ -135,6 +167,7 @@ def _render() -> None:
             format_func=lambda item: f'{item} · {by_trace[item]["frame_count"]} 帧',
         )
         trace = by_trace[trace_id]
+        config = _trace_config(trace)
         rule = st.sidebar.selectbox(
             "监控规则",
             [None, *RULE_LABELS],
@@ -168,15 +201,28 @@ def _render() -> None:
         rejected_rows = queries.rejected_lines(trace_id)
 
         st.subheader(trace_id)
+        provenance = PROVENANCE_LABELS.get(trace["provenance"], "来源标记未识别")
         st.caption(
-            f'源文件：{trace["source_name"]} ｜ 来源标记：{trace["provenance"]} ｜ '
+            f'源文件：{trace["source_name"]} ｜ 来源：{provenance} ｜ '
             f'完整日志范围：{start_seconds:.6f}–{end_seconds:.6f} s'
         )
-        columns = st.columns(4)
-        columns[0].metric("窗口内原始帧", f"{len(frames):,}")
-        columns[1].metric("相交监控事件", f"{len(events):,}")
-        columns[2].metric("隔离行（整段日志）", f"{len(rejected_rows):,}")
-        columns[3].metric("当前观察窗", f"{_seconds(selected_end - selected_start):.6f} s")
+        channels = ", ".join(str(channel) for channel in config.get("expected_channels", [])) or "未记录"
+        timeout_us = config.get("timeout_us")
+        timeout_label = (
+            f"{timeout_us / 1_000:.3f} ms（{timeout_us} μs）"
+            if isinstance(timeout_us, int) else "未记录"
+        )
+        st.caption(
+            f'当前规则配置：期望 ASC 通道 {channels}；超时阈值 {timeout_label}；'
+            f'车速突变阈值 {_readable_decimal(config.get("max_acceleration_kmh_s", "未记录"))} km/h/s。'
+            "通道编号使用 ASC 文件中的值；有效报文间隔严格大于超时阈值后触发。"
+        )
+        first_row = st.columns(2)
+        first_row[0].metric("窗口内原始帧", f"{len(frames):,}")
+        first_row[1].metric("相交监控事件", f"{len(events):,}")
+        second_row = st.columns(2)
+        second_row[0].metric("隔离行（整段日志）", f"{len(rejected_rows):,}")
+        second_row[1].metric("当前观察窗", f"{_seconds(selected_end - selected_start):.6f} s")
 
         st.subheader("有效车速采样")
         speed_rows = [
@@ -197,7 +243,18 @@ def _render() -> None:
             if not events:
                 st.success("当前筛选范围没有监控规则事件。")
             else:
-                st.dataframe(_event_table(events), width="stretch", hide_index=True)
+                st.dataframe(
+                    _event_table(events), width="stretch", hide_index=True,
+                    column_order=[
+                        "开始秒", "结束秒", "规则", "can_id", "持续毫秒", "通道",
+                        "结束时未恢复", "触发或锚点帧", "恢复帧", "说明", "event_id", "规则代码",
+                    ],
+                    column_config={
+                        "开始秒": st.column_config.NumberColumn(format="%.6f"),
+                        "结束秒": st.column_config.NumberColumn(format="%.6f"),
+                        "持续毫秒": st.column_config.NumberColumn(format="%.3f"),
+                    },
+                )
                 by_event = {event["event_id"]: event for event in events}
                 event_id = st.selectbox(
                     "选择事件，追踪对应原始行",
@@ -216,7 +273,10 @@ def _render() -> None:
                     "恢复帧可能超出上方时间窗；physical_line 是源 ASC 文件的物理行号。"
                 )
                 if context:
-                    st.dataframe(_frame_table(context, event), width="stretch", hide_index=True)
+                    st.dataframe(
+                        _frame_table(context, event), width="stretch", hide_index=True,
+                        column_config=_frame_column_config(),
+                    )
                 else:
                     st.info("此事件没有可关联的源帧。初始缺报事件可能尚无最后有效锚点。")
                 if event["rule"] == "MESSAGE_TIMEOUT":
@@ -224,7 +284,10 @@ def _render() -> None:
 
         with frames_tab:
             st.caption("warning / data_fault / reason_code 是控制器报文输出；它们与上方监控规则事件分别记录。")
-            st.dataframe(_frame_table(frames), width="stretch", hide_index=True)
+            st.dataframe(
+                _frame_table(frames), width="stretch", hide_index=True,
+                column_config=_frame_column_config(),
+            )
             if frames:
                 st.download_button(
                     "下载当前窗口原始帧 CSV",
@@ -256,12 +319,6 @@ def _render() -> None:
             st.subheader("来源与规则参数")
             st.code(str(trace["source_sha256"]), language="text")
             st.caption("上方为原始文件字节的 SHA-256。来源标记由导入流程提供，不等同于实车真实性验证。")
-            config = trace.get("config_json", "{}")
-            if isinstance(config, str):
-                try:
-                    config = json.loads(config)
-                except json.JSONDecodeError:
-                    pass
             st.json(config)
             st.caption(f"数据库：{db_path}")
 

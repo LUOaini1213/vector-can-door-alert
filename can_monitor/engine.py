@@ -14,6 +14,7 @@ from door_alert.protocol import (
     ALERT_ID, DOOR_ID, VEHICLE_ID, Frame,
     decode_alert, decode_doors, decode_vehicle,
 )
+from .limits import check_trace_span
 
 
 MINUTE_US = 60_000_000
@@ -47,8 +48,8 @@ class RuleConfig:
             channels = tuple(self.expected_channels)
         except TypeError as exc:
             raise ValueError("expected_channels must be nonempty positive distinct integers") from exc
-        if not channels or any(type(channel) is not int or channel <= 0 for channel in channels):
-            raise ValueError("expected_channels must be nonempty positive distinct integers")
+        if not channels or any(type(channel) is not int or not 0 < channel <= 2_147_483_647 for channel in channels):
+            raise ValueError("expected_channels must be distinct positive 32-bit integers")
         if len(set(channels)) != len(channels):
             raise ValueError("expected_channels must contain distinct channels")
         object.__setattr__(self, "expected_channels", channels)
@@ -170,9 +171,7 @@ def analyze_trace(trace, config=None):
         raise ValueError("config must be a RuleConfig")
     trace_id = trace["trace_id"]
     start_us, end_us = trace["start_us"], trace["end_us"]
-    if (type(start_us) is not int or type(end_us) is not int or
-            start_us < 0 or end_us < start_us):
-        raise ValueError("trace bounds must be ordered nonnegative integer microseconds")
+    check_trace_span(start_us, end_us)
     frames = []
     previous_us = start_us
     for source in trace["frames"]:

@@ -396,10 +396,7 @@ class StoreAndQueryAcceptance(unittest.TestCase):
         project_root = Path(__file__).resolve().parents[1]
         # The required model dependencies come from the public contract; changing
         # only this temporary DBC must be enough to invalidate the source cache.
-        for relative in [
-            "can_monitor/parser.py", "can_monitor/engine.py", "can_monitor/store.py",
-            "door_alert/protocol.py", "data/body_control.dbc", "sql/monitor_schema.sql",
-        ]:
+        for relative in monitor_store_module.MODEL_FILES:
             target = model_root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(project_root / relative, target)

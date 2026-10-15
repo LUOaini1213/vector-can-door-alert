@@ -17,7 +17,7 @@
     "door_alert/protocol.py": "b747f1470c110d8c3a64445a450b4e634943fe8cdfe13b8a6f4412b4a9bc45e4",
     "door_alert/reporting.py": "e4122a5295523da8c9f4090c519704ce6ef4f76cb45844562fe6d15cc954e103",
     "door_alert/scenarios.py": "08504df93a536567f74d893e133199eaa575cefae64d9837f853f0c91f365f46",
-    "scripts/check_monitor_ui.py": "786e8b9f279fec7fc7b2c7bd251a9e6bcb43b5437dd9d2de7c0dfe3a1872e6e7",
+    "scripts/check_monitor_ui.py": "e598cfb0a49d35ab8393c9117037dd39f32b2244a32c031374672d93ee63e031",
     "scripts/check_project.py": "32939a080cbf4339ecdf8bcf38466a3071d7dc8d9bae6d54dcf232b26a2064af",
     "scripts/package_project.py": "c2460a4f0b38a8b0727d3c60f6901fadf23637abedf7d8399b5c077bd1242abb",
     "scripts/verify_interop.py": "476c2d0fdba61b5daf4c407f50dc482af78eb6b98b04b58abe75146ad2b2178e",

@@ -9,12 +9,14 @@ import uuid
 import duckdb
 
 from .engine import RuleConfig, analyze_trace
+from .integrity import checks_pass, validate_trace
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "sql" / "monitor_schema.sql"
 MODEL_FILES = (
     "can_monitor/parser.py", "can_monitor/engine.py", "can_monitor/store.py",
+    "can_monitor/limits.py", "can_monitor/integrity.py",
     "door_alert/protocol.py", "data/body_control.dbc", "sql/monitor_schema.sql",
 )
 
@@ -77,11 +79,13 @@ class MonitorStore:
     def close(self):
         self.con.close()
 
-    def ingest(self, trace, config=None, failpoint=None):
+    def ingest(self, trace, config=None, failpoint=None, force=False):
         if config is None:
             config = RuleConfig()
         if not isinstance(config, RuleConfig):
             raise ValueError("config must be a RuleConfig")
+        if type(force) is not bool:
+            raise ValueError("force must be a bool")
         if failpoint not in (None, "after_delete"):
             raise ValueError("unknown failpoint")
         trace_id = trace["trace_id"]
@@ -94,9 +98,10 @@ class MonitorStore:
             prior = self.con.execute(
                 "SELECT fingerprint,frame_count,event_count,rejected_line_count FROM mon.traces WHERE trace_id=?",
                 [trace_id]).fetchone()
-            if prior is not None and prior[0] == fingerprint:
+            if (not force and prior is not None and prior[0] == fingerprint
+                    and checks_pass(validate_trace(self.con, trace_id))):
                 self.con.execute("UPDATE mon.runs SET status='SKIPPED',finished_at=?,message=? WHERE run_id=?",
-                                 [_utcnow(), "identical source, configuration and model fingerprint", run_id])
+                                 [_utcnow(), "identical fingerprint and published consistency verified", run_id])
                 return {"status": "skipped", "trace_id": trace_id, "fingerprint": fingerprint,
                         "frame_count": prior[1], "event_count": prior[2], "rejected_line_count": prior[3]}
 
@@ -133,6 +138,8 @@ class MonitorStore:
                 "trace_id", "minute_index", "frame_count", "invalid_frame_count", "unknown_frame_count",
                 "event_start_count", "timeout_duration_us", "speed_mean_kmh", "speed_max_kmh"),
                          analysis["minute_stats"])
+            if not checks_pass(validate_trace(self.con, trace_id)):
+                raise ValueError("published trace reconciliation failed before commit")
             # A COMPLETED run and all published rows share one commit. The
             # RUNNING audit was committed before BEGIN and can survive rollback.
             self.con.execute("UPDATE mon.runs SET status='COMPLETED',finished_at=?,message=? WHERE run_id=?",

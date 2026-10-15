@@ -5,6 +5,8 @@ import hashlib
 from pathlib import Path
 import re
 
+from .limits import check_trace_span
+
 TRACE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z")
 ALLOWED_PROVENANCE = {"synthetic", "user-provided-unverified"}
 
@@ -52,15 +54,17 @@ def read_asc(path, trace_id=None, provenance="user-provided-unverified"):
         lower = line.lower()
         if not line or line.startswith("//"):
             continue
-        if lower.startswith("base "):
-            if lower != "base hex timestamps absolute":
+        if re.match(r"base(?:\s|$)", lower):
+            if lower.split() != ["base", "hex", "timestamps", "absolute"]:
                 raise ValueError("only base hex timestamps absolute ASC headers are supported")
             if frames:
                 raise ValueError("ASC base header must precede all frames")
             header_seen = True
             continue
-        if lower.startswith("date ") or lower in {
-                "internal events logged", "begin triggerblock", "end triggerblock"}:
+        if (re.match(r"date\s+", lower) or
+                re.fullmatch(r"(?:no\s+)?internal\s+events\s+logged", lower) or
+                re.fullmatch(r"(?:begin|end)\s+triggerblock(?:\s+.+)?", lower) or
+                re.fullmatch(r"\d+(?:\.\d+)?\s+start\s+of\s+measurement", lower)):
             continue
         if not header_seen:
             raise ValueError("missing supported ASC base header before data")
@@ -93,6 +97,7 @@ def read_asc(path, trace_id=None, provenance="user-provided-unverified"):
                        "data_hex": data_hex, "raw_line": raw_line})
     if not header_seen or not frames:
         raise ValueError("ASC input must have the supported header and at least one accepted frame")
+    check_trace_span(frames[0]["timestamp_us"], frames[-1]["timestamp_us"])
     return {"trace_id": trace_id, "source_name": path.name,
             "source_sha256": hashlib.sha256(snapshot).hexdigest(), "provenance": provenance,
             "start_us": frames[0]["timestamp_us"], "end_us": frames[-1]["timestamp_us"],

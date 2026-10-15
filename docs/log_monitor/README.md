@@ -52,7 +52,11 @@ py -3 -m venv .analysis-venv
 
 相同日志 ID、来源字节、规则和模型指纹再次导入会跳过；改变输入、参数或模型会在事务中只替换该日志，保留其他日志。`after_delete` 故障注入验证发布回滚，FAILED 审计保留。
 
+跳过前会独立检查已发布表的一致性：记录数、事件引用、区间，以及逐分钟各项统计都要对上。若发现缺行或分钟指标不一致，会从本次输入重新原子发布；也可以使用 `--force` 明确重建。同样的校验在提交前和报告生成时执行。它检查数据库层间一致性，不验证日志来源或原始信号真实性。
+
 仅支持本项目的经典 CAN、标准 11 位 ID、绝对秒时间、十六进制 ASC 子集。错误候选行进入隔离；不支持的 base/relative 头部、已接受报文倒序、无接受报文会拒绝整次导入。UTF-8/BOM 可用。没有通用 CAN FD、扩展帧、任意厂商 ASC 或任意 DBC 导入能力。信号解码复用 `door_alert.protocol`，与现有固定 `body_control.dbc` 对应。
+
+支持 python-can 4.6.1 ASCWriter 原生头部的空白，以及带日期的 Triggerblock 和 Start of measurement 元数据；识别元数据时不会改写原始文件。单份日志的接受报文跨度上限为 **24 小时**，解析器和直接分析 API 都会检查，超限明确拒绝，不静默截断。这样可把超时分钟展开限制在最多 1,441 个桶。
 
 自己的 ASC 用：
 
@@ -60,11 +64,19 @@ py -3 -m venv .analysis-venv
 .\.analysis-venv\Scripts\python.exe -m can_monitor ingest "C:\your-log.asc" --trace-id MY01
 ```
 
+默认监控 ASC 通道 1。自己的日志如果使用通道 2，显式指定；参数可重复，用于监控多个通道：
+
+```powershell
+.\.analysis-venv\Scripts\python.exe -m can_monitor ingest "C:\your-log.asc" --trace-id MY01 --expected-channel 2
+# 明确重新构建该日志；保留其他日志
+.\.analysis-venv\Scripts\python.exe -m can_monitor ingest "C:\your-log.asc" --trace-id MY01 --expected-channel 2 --force
+```
+
 这类导入默认标为 `user-provided-unverified`；来源标签不证明实车真实性。看板可通过 `CAN_MONITOR_DB` 环境变量切换到另一个已建好的库。
 
 ## 验证与边界
 
-2026-10-15 实际运行：17 份仿真日志、1,260 条接受报文、19 个规则事件（7 次超时、9 次信号无效、3 次速度突变）、1 行格式隔离。新增 21 项独立验收通过，Streamlit AppTest 的 8 项交互检查通过，1,260 条接受记录与 python-can 独立解析结果逐项一致。原有 32 项控制器单元测试仍通过。
+实际 demo：17 份仿真日志、1,260 条接受报文、19 个规则事件（7 次超时、9 次信号无效、3 次速度突变）、1 行格式隔离。当前自动测试及界面检查的实际数量见 `acceptance.json`；1,260 条接受记录与 python-can 独立解析结果逐项核对。原控制器测试与新增监控测试分别记录。
 
 ```powershell
 .\.analysis-venv\Scripts\python.exe -m unittest discover -s tests_monitor -v
@@ -74,5 +86,17 @@ py -3 -m venv .analysis-venv
 本次实际证据见 `reports/log_monitor/2026-10-15/`。原有控制器、DBC/ASC 格式交叉检查和新增监控的验证分别记录。本扩展不改变 CANoe/CAPL 未编译、未运行的状态，也不构成车辆安全策略或真实故障诊断。
 
 `verify_monitor.py` 使用单独的 `artifacts/monitor_verification.duckdb` 存放固定样例验收，不改动用户工作的 `log_monitor.duckdb`。
+
+## 2026-10-15 联网复核与修正
+
+按 [python-can ASC 实现](https://python-can.readthedocs.io/en/stable/_modules/can/io/asc.html)、[Streamlit 1.50 数值列文档](https://docs.streamlit.io/1.50.0/develop/api-reference/data/st.column_config/st.column_config.numbercolumn)及 [DuckDB 当前并发文档](https://duckdb.org/docs/current/connect/concurrency)复核，并用临时输入和数据库复现后处理：
+
+- 原生 ASCWriter 头部和元数据现在可以直接读取。
+- 超大时间跨度在进入分钟展开前拒绝；CLI 可选择实际 ASC 通道。
+- 表格秒数固定六位小数、毫秒三位，同时保留整数微秒；主区展示通道和规则参数。
+- 用户导入日志显示未验证来源，不统一称为仿真数据。
+- 对账覆盖逐分钟计数、事件起点、时长、均值和最大值；同指纹但发布层不一致会重建，并提供 `--force`。
+
+复核时原有工作库各分钟统计没有不一致；修复验证使用的是另建的临时损坏样例。当前定位仍是本地离线教学与面试演示，数据采集、实车诊断、CANoe/CAPL、生产并发均不能由这些检查替代。
 
 技术参考：[python-can ASCReader](https://python-can.readthedocs.io/en/stable/file_io.html)、[Streamlit 文档](https://docs.streamlit.io/)、[DuckDB Python](https://duckdb.org/docs/stable/clients/python/overview)。

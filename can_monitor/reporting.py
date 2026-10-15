@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from .queries import MonitorQueries
+from .integrity import validate_trace
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,18 +34,7 @@ def write_report(db_path, output):
             identifier = trace["trace_id"]
             fs, es = queries.frames(identifier), queries.events(identifier)
             ms, rs = queries.minute_stats(identifier), queries.rejected_lines(identifier)
-            numbers = {frame["frame_no"] for frame in fs}
-            refs_ok = all(event.get(key) is None or event[key] in numbers
-                          for event in es for key in ("frame_no", "previous_frame_no", "recovery_frame_no"))
-            duration = sum(event["duration_us"] for event in es if event["rule"] == "MESSAGE_TIMEOUT")
-            checks.append({"trace_id": identifier,
-                           "frame_count_balanced": trace["frame_count"] == len(fs) == sum(m["frame_count"] for m in ms),
-                           "event_count_balanced": trace["event_count"] == len(es) == sum(m["event_start_count"] for m in ms),
-                           "rejected_count_balanced": trace["rejected_line_count"] == len(rs),
-                           "timeout_duration_balanced": duration == sum(m["timeout_duration_us"] for m in ms),
-                           "event_frame_references_valid": refs_ok,
-                           "event_intervals_in_log": all(trace["start_us"] <= e["start_us"] <= e["end_us"] <= trace["end_us"]
-                                                        and e["duration_us"] == e["end_us"] - e["start_us"] for e in es)})
+            checks.append(validate_trace(queries.con, identifier))
             frames.extend(fs); events.extend(es); minutes.extend(ms); rejected.extend(rs)
             if identifier.startswith("MON"):
                 for event in es:
@@ -65,6 +55,7 @@ def write_report(db_path, output):
               "traces": traces, "events": events, "minute_stats": minutes, "rejected_lines": rejected,
               "reconciliation": checks, "example_event_contexts": contexts, "source_code_sha256": hashes,
               "scope": "Offline fixed-protocol classic CAN ASC analysis; simulated data is explicitly labeled. No CANoe or hardware validation.",
+              "reconciliation_scope": "Independent SQL checks table counts, references and per-minute metrics; it does not authenticate source bytes or vehicle provenance.",
               "duration_semantics": "Timeout first starts at last valid us + threshold us + 1. Open intervals end at the last observed frame. Per-signal time sums may overlap."}
     output = Path(output); output.mkdir(parents=True, exist_ok=True)
     (output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
@@ -89,7 +80,7 @@ def write_report(db_path, output):
     html = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAN 日志分析验证报告</title>
 <style>*{{box-sizing:border-box}}body{{margin:0;background:#f0f4f9;color:#17243b;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif}}main{{max-width:1280px;margin:auto;padding:30px 22px}}h1{{font-size:30px}}h2{{font-size:20px}}section,.notice{{background:white;border:1px solid #dbe3ee;border-radius:12px;padding:20px;margin:20px 0}}.cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}}.cards div{{background:white;padding:18px;border-radius:10px}}strong{{display:block;font-size:27px}}.tablewrap{{overflow-x:auto}}table{{border-collapse:collapse;font-size:13px;white-space:nowrap}}th,td{{padding:8px;border:1px solid #dce4ee;text-align:left}}th{{background:#edf3fb}}code{{background:#edf3fb;padding:3px 6px}}@media(max-width:700px){{.cards{{grid-template-columns:repeat(2,1fr)}}main{{padding:18px 12px}}}}</style></head><body><main>
 <h1>车辆日志分析与异常监控</h1><p>离线 ASC → 固定协议解码 → DuckDB → 规则事件 → 原始报文追踪</p><div class="cards">{cards}</div>
-<div class="notice"><b>分层核对：{'通过' if all_ok else '失败或无数据'}</b><p>{escape(source_notice)}。来源标签由导入流程提供。规则事件不等于真实车辆故障，也不等于原控制器的车门 warning 输出。CAPL/CANoe 和硬件状态不因这一版而改变。</p><p>超时严格超过阈值后第 1 微秒开始；未恢复事件只统计到日志末尾。分钟超时时长是各 ID/通道的累计信号时长，同一时刻多个信号可叠加。</p><p>交互看板：运行 <code>run_monitor.cmd</code>，可按场景、规则与时间过滤，选择事件查看触发、前序和恢复报文。</p><small>生成 UTC {escape(report['generated_at_utc'])}</small></div>{body}</main></body></html>'''
+<div class="notice"><b>分层核对：{'通过' if all_ok else '失败或无数据'}</b><p>{escape(source_notice)}。来源标签由导入流程提供。规则事件不等于真实车辆故障，也不等于原控制器的车门 warning 输出。CAPL/CANoe 和硬件状态不因这一版而改变。</p><p>独立 SQL 逐分钟核对帧数、无效/未知数、事件起点、超时时长及车速均值/最大值；这些检查证明表间一致性，不能验证原始文件字节或车辆来源真实性。</p><p>超时严格超过阈值后第 1 微秒开始；未恢复事件只统计到日志末尾。分钟超时时长是各 ID/通道的累计信号时长，同一时刻多个信号可叠加。</p><p>交互看板：运行 <code>run_monitor.cmd</code>，可按场景、规则与时间过滤，选择事件查看触发、前序和恢复报文。</p><small>生成 UTC {escape(report['generated_at_utc'])}</small></div>{body}</main></body></html>'''
     (output / "report.html").write_text(html, encoding="utf-8")
     if not all_ok:
         raise ValueError("monitor report reconciliation failed; inspect report.json")

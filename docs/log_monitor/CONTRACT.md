@@ -19,6 +19,9 @@ relative-timestamp or generic vendor format claims. UTF-8/BOM accepted; malforme
 candidate/unsupported records retained in rejected_lines; invalid header, backwards
 accepted timestamps or no accepted frames raise ValueError. File order and identical
 frames retained. Timestamps must be nonnegative exact integer microseconds.
+ASCWriter whitespace and recognized measurement/triggerblock metadata are supported.
+Accepted frame span is limited to 24 hours; can_monitor.limits.check_trace_span is
+called by both the parser and the direct engine API before minute expansion.
 
 Returned dict keys:
 - trace_id: safe [A-Za-z0-9][A-Za-z0-9_.-]{0,63}; source_name (basename),
@@ -69,12 +72,16 @@ sum to accepted raw frames. Do not interpolate signals across gaps.
 ## Persistence and queries
 
 `MonitorStore(db_path)` context manager exposes `.con`.
-`.ingest(trace, config=None, failpoint=None)->dict` with status loaded/skipped,
+`.ingest(trace, config=None, failpoint=None, force=False)->dict` with status loaded/skipped,
 trace_id, fingerprint, frame_count,event_count,rejected_line_count.
-`.ingest` uses source SHA + config + parser/engine/store/protocol/DBC/schema code
-fingerprint. Same trace_id and fingerprint skips; changed input/config/model
+`.ingest` uses source SHA + config + parser/engine/store/protocol/DBC/schema/limits/integrity code
+fingerprint. Same trace_id and fingerprint skips only after published integrity passes;
+otherwise the trace is rebuilt. force=True explicitly rebuilds. Changed input/config/model
 atomically replaces only that trace; another trace untouched. failpoint='after_delete'
 raises RuntimeError and rolls back published data; FAILED audit survives.
+Before skip, commit, and report, independent SQL checks published counts, references,
+intervals and every minute's metrics (with float tolerance). This checks layer
+consistency, not original-file authenticity. Minute expansion is explicitly bounded.
 
 Tables mon.traces,mon.frames,mon.rejected_lines,mon.events,mon.minute_stats,
 mon.runs. Column names match parser+engine dicts, except:
@@ -109,3 +116,5 @@ Database from env CAN_MONITOR_DB or ROOT/artifacts/log_monitor.duckdb. Friendly
 missing DB instructions. No arbitrary SQL editor, upload or implicit import.
 Timestamp axis uses relative log seconds, not wall-clock dates. All visible text
 distinguishes monitor rule events, controller warning output and synthetic traces.
+UI seconds display six decimal places, milliseconds three, with exact timestamp_us
+columns preserved. Provenance and configured ASC channels/thresholds are visible.

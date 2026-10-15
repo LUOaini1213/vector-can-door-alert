@@ -23,6 +23,10 @@ def main(argv=None):
         if name != "report":
             command.add_argument("--timeout-ms", type=float, default=300)
             command.add_argument("--max-acceleration", type=float, default=100)
+            command.add_argument("--expected-channel", type=int, action="append",
+                                 help="expected ASC channel (1-based); repeat for multiple channels; default: 1")
+            command.add_argument("--force", action="store_true",
+                                 help="rebuild the selected trace even when its fingerprint matches")
         if name == "ingest":
             command.add_argument("path", type=Path)
             command.add_argument("--trace-id")
@@ -30,7 +34,8 @@ def main(argv=None):
     try:
         results = []
         if args.command != "report":
-            config = RuleConfig(timeout_ms=args.timeout_ms, max_acceleration_kmh_s=args.max_acceleration)
+            config = RuleConfig(timeout_ms=args.timeout_ms, max_acceleration_kmh_s=args.max_acceleration,
+                                expected_channels=tuple(args.expected_channel or [1]))
             if args.command == "demo":
                 paths = sorted((ROOT / "reports/demo/traces").glob("SC*.asc"))
                 paths += sorted((ROOT / "data/monitor").glob("MON*.asc"))
@@ -41,7 +46,7 @@ def main(argv=None):
                 traces = [read_asc(args.path, trace_id=args.trace_id)]
             args.db.parent.mkdir(parents=True, exist_ok=True)
             with MonitorStore(args.db) as store:
-                results = [store.ingest(trace, config=config) for trace in traces]
+                results = [store.ingest(trace, config=config, force=args.force) for trace in traces]
         if not args.db.is_file():
             raise ValueError("database not found; run python -m can_monitor demo first")
         from .reporting import write_report
