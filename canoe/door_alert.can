@@ -1,0 +1,197 @@
+/*@!Encoding:1252*/
+/* Educational integration source. NOT compiled or run in CANoe yet.
+   Classic CAN 1; see CONTRACT.md and canoe/README.md. */
+
+variables
+{
+  msTimer controllerTick;
+  message CAN1.0x200 alertFrame;
+  word speedRaw;
+  byte ignition;
+  byte doorMask;
+  int vehicleValid;
+  int doorsValid;
+  dword vehicleTimeMs;
+  dword doorsTimeMs;
+  int warning;
+  int dataFault;
+  int reason;
+  int pending;
+  dword pendingTimeMs;
+  int lastLoggedWarning;
+  int lastLoggedFault;
+  int lastLoggedReason;
+}
+
+dword currentTimeMs()
+{
+  /* timeNow() returns 10-microsecond units. Short demonstrations only;
+     restart measurement before the timeNow() counter wraps. */
+  return timeNow() / 100;
+}
+
+void publishStatus()
+{
+  int i;
+  alertFrame.dlc = 8;
+  alertFrame.rtr = 0;
+  for (i = 0; i < 8; i++)
+  {
+    alertFrame.byte(i) = 0;
+  }
+  alertFrame.byte(0) = warning;
+  alertFrame.byte(1) = dataFault;
+  alertFrame.byte(2) = reason;
+  output(alertFrame);
+
+  if ((warning != lastLoggedWarning) ||
+      (dataFault != lastLoggedFault) ||
+      (reason != lastLoggedReason))
+  {
+    write("DoorAlert at %u ms: warning=%d fault=%d reason=%d",
+          currentTimeMs(), warning, dataFault, reason);
+    lastLoggedWarning = warning;
+    lastLoggedFault = dataFault;
+    lastLoggedReason = reason;
+  }
+}
+
+void evaluateController(dword nowMs)
+{
+  /* Priority matches CONTRACT.md. Compare raw 0.01-km/h integers. */
+  if ((!vehicleValid) || (!doorsValid) ||
+      ((nowMs - vehicleTimeMs) > 300) ||
+      ((nowMs - doorsTimeMs) > 300))
+  {
+    warning = 0;
+    dataFault = 1;
+    pending = 0;
+    reason = 1; /* DATA_UNAVAILABLE */
+  }
+  else if (ignition == 0)
+  {
+    warning = 0;
+    dataFault = 0;
+    pending = 0;
+    reason = 2; /* IGNITION_OFF */
+  }
+  else if (doorMask == 0)
+  {
+    warning = 0;
+    dataFault = 0;
+    pending = 0;
+    reason = 3; /* DOORS_CLOSED */
+  }
+  else if (warning)
+  {
+    dataFault = 0;
+    if (speedRaw <= 300)
+    {
+      warning = 0;
+      pending = 0;
+      reason = 4; /* BELOW_THRESHOLD */
+    }
+    else
+    {
+      reason = 6; /* WARNING_ACTIVE; hysteresis holds at 3 < v < 5 */
+    }
+  }
+  else if (speedRaw >= 500)
+  {
+    dataFault = 0;
+    if (!pending)
+    {
+      pending = 1;
+      pendingTimeMs = nowMs;
+    }
+    if ((nowMs - pendingTimeMs) >= 200)
+    {
+      warning = 1;
+      pending = 0;
+      reason = 6;
+    }
+    else
+    {
+      reason = 5; /* DEBOUNCING */
+    }
+  }
+  else
+  {
+    warning = 0;
+    dataFault = 0;
+    pending = 0;
+    reason = 4;
+  }
+  publishStatus();
+}
+
+on start
+{
+  speedRaw = 0;
+  ignition = 0;
+  doorMask = 0;
+  vehicleValid = 0;
+  doorsValid = 0;
+  vehicleTimeMs = 0;
+  doorsTimeMs = 0;
+  warning = 0;
+  dataFault = 1;
+  reason = 1;
+  pending = 0;
+  pendingTimeMs = 0;
+  lastLoggedWarning = -1;
+  lastLoggedFault = -1;
+  lastLoggedReason = -1;
+  evaluateController(currentTimeMs());
+  setTimer(controllerTick, 10);
+}
+
+on timer controllerTick
+{
+  evaluateController(currentTimeMs());
+  setTimer(controllerTick, 10);
+}
+
+on message CAN1.0x100
+{
+  word decodedSpeed;
+  /* No payload access before the length check. Invalid input stays
+     invalid until another valid frame of THIS ID is received. */
+  if ((this.dlc != 8) || (this.rtr != 0))
+  {
+    vehicleValid = 0;
+    return;
+  }
+  decodedSpeed = this.byte(0) + 256 * this.byte(1);
+  if ((decodedSpeed > 25000) || (this.byte(2) > 1))
+  {
+    vehicleValid = 0;
+    return;
+  }
+  speedRaw = decodedSpeed;
+  ignition = this.byte(2);
+  vehicleTimeMs = currentTimeMs();
+  vehicleValid = 1;
+}
+
+on message CAN1.0x101
+{
+  if ((this.dlc != 8) || (this.rtr != 0))
+  {
+    doorsValid = 0;
+    return;
+  }
+  if (this.byte(0) > 15)
+  {
+    doorsValid = 0;
+    return;
+  }
+  doorMask = this.byte(0);
+  doorsTimeMs = currentTimeMs();
+  doorsValid = 1;
+}
+
+on preStop
+{
+  cancelTimer(controllerTick);
+}

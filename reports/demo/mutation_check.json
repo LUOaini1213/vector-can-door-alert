@@ -1,0 +1,56 @@
+{
+  "mutants_detected": 4,
+  "mutants_checked": 4,
+  "mutants": [
+    {
+      "mutation": "DEBOUNCE_MS=190",
+      "detected": true,
+      "failed_scenarios": [
+        "SC01",
+        "SC02",
+        "SC03",
+        "SC04",
+        "SC05",
+        "SC06",
+        "SC07",
+        "SC08",
+        "SC09",
+        "SC10",
+        "SC11",
+        "SC12",
+        "SC13",
+        "SC14",
+        "SC15",
+        "SC16"
+      ]
+    },
+    {
+      "mutation": "ON_SPEED_RAW=501",
+      "detected": true,
+      "failed_scenarios": [
+        "SC02",
+        "SC04",
+        "SC14"
+      ]
+    },
+    {
+      "mutation": "OFF_SPEED_RAW=299",
+      "detected": true,
+      "failed_scenarios": [
+        "SC03",
+        "SC04"
+      ]
+    },
+    {
+      "mutation": "FRESHNESS_MS=299",
+      "detected": true,
+      "failed_scenarios": [
+        "SC07",
+        "SC08",
+        "SC16"
+      ]
+    }
+  ],
+  "cli_failed_assertion_exit_code": 1,
+  "scope": "Four selected boundary mutations; not exhaustive mutation coverage"
+}

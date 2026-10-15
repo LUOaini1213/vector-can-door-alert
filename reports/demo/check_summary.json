@@ -1,0 +1,28 @@
+{
+  "unit_tests_run": 32,
+  "unit_tests_passed": true,
+  "boundary_mutations_detected": 4,
+  "cli_failed_assertion_exit_code": 1,
+  "source_sha256": {
+    "canoe/door_alert.can": "2323a8eff7053aae2887dc6a55873b83f165f996ce7158b7964d72cbf62bc6d1",
+    "canoe/scenario_driver.can": "27242e92a25ad9513c8f6dbb12f9cb69b851767725276327bbf912fbcabd5bc6",
+    "data/body_control.dbc": "9e42f6da855c8a10ea9d6741f63b75180a4071e47ee5c13b61677885f69a13b2",
+    "data/scenarios.json": "f013a5cf60ff385600ea96499d120013c06128559d89944e466f3a72d96b599f",
+    "docs/design.md": "c67a8917ef25151ae049b8d69a21871a6d115b007fa0157e77e0845f139016bc",
+    "docs/requirements.md": "da5e71bbce517b469fd4b0ab5522cc7e7fb0972f058b6dab335da77029028b87",
+    "door_alert/__init__.py": "19bc69c31e2bd138bd07620048906e9bcbbd32a5fec0e56bf4ba2b587c45c2b4",
+    "door_alert/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "door_alert/cli.py": "f9d675a22969c0ef29250e7ac1eaf08ff6b4023a27f5f99786c17665d2382ec8",
+    "door_alert/controller.py": "728403d613b7425461b09a5e1be4bd8a5959bd44d5e3f2ff431274df1a0200eb",
+    "door_alert/protocol.py": "b747f1470c110d8c3a64445a450b4e634943fe8cdfe13b8a6f4412b4a9bc45e4",
+    "door_alert/reporting.py": "e4122a5295523da8c9f4090c519704ce6ef4f76cb45844562fe6d15cc954e103",
+    "door_alert/scenarios.py": "08504df93a536567f74d893e133199eaa575cefae64d9837f853f0c91f365f46",
+    "scripts/check_project.py": "32939a080cbf4339ecdf8bcf38466a3071d7dc8d9bae6d54dcf232b26a2064af",
+    "scripts/package_project.py": "db3227f7c06ddbedb87ef9fc7b40ca656ff901f511cbfc25b6008ffc0f988413",
+    "scripts/verify_interop.py": "476c2d0fdba61b5daf4c407f50dc482af78eb6b98b04b58abe75146ad2b2178e",
+    "tests/_fixture_authoring.py": "9963f57edc9bd2a26043435ee52993d253b90d0abea8a4ec723da58a5ddc1b6a",
+    "tests/test_controller.py": "66cc682132460e7aaacf854f8ad6da8ee93ac5f070a387858223fc95cc60ffb9",
+    "tests/test_protocol.py": "723b7a4d42c30bcdbba4a38decc88eaf0d7d86e9b7d30e648c3aa0d4b22d807d",
+    "tests/test_scenarios.py": "21645f8101467572a9620a317e5988e415cfccb00809eadfc0dd8e8d1753f375"
+  }
+}

@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+.verification-venv/
+.verification-deps/
+reports/latest/
+reports/mutation-check/
+*.log

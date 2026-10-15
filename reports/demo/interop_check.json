@@ -1,0 +1,27 @@
+{
+  "cantools_version": "45.0.0",
+  "python_can_version": "4.6.1",
+  "dbc_messages": 3,
+  "independent_encoding_vectors": 2058,
+  "asc_files_verified": 16,
+  "asc_messages_verified": 1237,
+  "asc_message_counts": {
+    "SC01": 49,
+    "SC02": 55,
+    "SC03": 64,
+    "SC04": 100,
+    "SC05": 76,
+    "SC06": 76,
+    "SC07": 77,
+    "SC08": 77,
+    "SC09": 67,
+    "SC10": 75,
+    "SC11": 75,
+    "SC12": 75,
+    "SC13": 87,
+    "SC14": 68,
+    "SC15": 95,
+    "SC16": 121
+  },
+  "scope": "Independent open-source DBC and ASC parsers. This is not a CANoe import or CAPL execution test."
+}

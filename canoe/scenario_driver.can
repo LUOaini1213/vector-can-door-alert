@@ -1,0 +1,228 @@
+/*@!Encoding:1252*/
+/* Single stimulus owner for 0x100/0x101. NOT compiled or run yet.
+   Keys 1..4 choose normal / thresholds / dropped doors / bad frames.
+   First transmission is at 5 mod 10 ms, then every 100 ms. */
+
+variables
+{
+  msTimer stimulusTick;
+  message CAN1.0x100 vehicleFrame;
+  message CAN1.0x101 doorsFrame;
+  int selectedScenario;
+  long step;
+}
+
+void sendVehicle(word rawSpeed, byte ignitionValue, byte lengthValue)
+{
+  int i;
+  vehicleFrame.rtr = 0;
+  vehicleFrame.dlc = lengthValue;
+  for (i = 0; i < 8; i++)
+  {
+    vehicleFrame.byte(i) = 0;
+  }
+  vehicleFrame.byte(0) = rawSpeed & 0xFF;
+  vehicleFrame.byte(1) = (rawSpeed >> 8) & 0xFF;
+  vehicleFrame.byte(2) = ignitionValue;
+  output(vehicleFrame);
+}
+
+void sendDoors(byte maskValue, byte lengthValue)
+{
+  int i;
+  doorsFrame.rtr = 0;
+  doorsFrame.dlc = lengthValue;
+  for (i = 0; i < 8; i++)
+  {
+    doorsFrame.byte(i) = 0;
+  }
+  doorsFrame.byte(0) = maskValue;
+  output(doorsFrame);
+}
+
+void selectScenario(int number)
+{
+  long delayMs;
+  long nowMs;
+  selectedScenario = number;
+  step = 0;
+  cancelTimer(stimulusTick);
+  /* Avoid controller's 0 mod 10-ms evaluations. Keys never output
+     directly, so key/timer event ordering cannot inject an extra frame. */
+  nowMs = timeNow() / 100;
+  delayMs = 5 - (nowMs % 10);
+  if (delayMs <= 0)
+  {
+    delayMs += 10;
+  }
+  setTimer(stimulusTick, delayMs);
+  write("Scenario %d selected. Begins after %d ms; repeats every 5000 ms.",
+        selectedScenario, delayMs);
+}
+
+void emitScenarioStep()
+{
+  long phaseMs;
+  word rawSpeed;
+  byte ignitionValue;
+  byte maskValue;
+  byte vehicleDlc;
+  byte doorsDlc;
+  int sendDoorFrame;
+  phaseMs = step * 100;
+  rawSpeed = 1000;
+  ignitionValue = 1;
+  maskValue = 1;
+  vehicleDlc = 8;
+  doorsDlc = 8;
+  sendDoorFrame = 1;
+
+  /* All scenarios have a 500-ms reset phase. Scenario selection does
+     not secretly reset the controller; actual CAN inputs clear it. */
+  if (phaseMs < 500)
+  {
+    rawSpeed = 0;
+    ignitionValue = 0;
+    maskValue = 0;
+  }
+  else if (selectedScenario == 1)
+  {
+    if ((phaseMs < 1000) ||
+        ((phaseMs >= 2000) && (phaseMs < 2500)) ||
+        (phaseMs >= 4000))
+    {
+      maskValue = 0;
+    }
+    if ((phaseMs >= 3500) && (phaseMs < 4000))
+    {
+      ignitionValue = 0;
+    }
+  }
+  else if (selectedScenario == 2)
+  {
+    if (phaseMs < 1000)
+    {
+      rawSpeed = 499; /* 4.99: inactive stays inactive */
+    }
+    else if (phaseMs < 1500)
+    {
+      rawSpeed = 500; /* 5.00: start 200-ms debounce */
+    }
+    else if (phaseMs < 2000)
+    {
+      rawSpeed = 400; /* 4.00: active warning holds */
+    }
+    else if (phaseMs < 2500)
+    {
+      rawSpeed = 300; /* 3.00: active warning clears */
+    }
+    else if (phaseMs < 3000)
+    {
+      rawSpeed = 499; /* 4.99: must not reactivate */
+    }
+    else if (phaseMs < 3300)
+    {
+      rawSpeed = 500;
+    }
+    else if (phaseMs < 3500)
+    {
+      rawSpeed = 400;
+    }
+    else
+    {
+      maskValue = 0;
+    }
+  }
+  else if (selectedScenario == 3)
+  {
+    /* Door's last valid transmission before loss is phase 900.
+       Vehicle frames continue, so only the door stream goes stale. */
+    if ((phaseMs >= 1000) && (phaseMs < 1700))
+    {
+      sendDoorFrame = 0;
+    }
+    if (phaseMs >= 2500)
+    {
+      maskValue = 0;
+    }
+  }
+  else if (selectedScenario == 4)
+  {
+    /* Never emit both a good and bad frame of one ID in a step.
+       This prevents same-timestamp 'last frame wins' ambiguity. */
+    if ((phaseMs >= 1000) && (phaseMs < 1200))
+    {
+      doorsDlc = 1;
+    }
+    else if ((phaseMs >= 1800) && (phaseMs < 2000))
+    {
+      maskValue = 16; /* Invalid high bit, despite DLC 8 */
+    }
+    else if ((phaseMs >= 2600) && (phaseMs < 2800))
+    {
+      rawSpeed = 25001; /* Invalid physical range: 250.01 km/h */
+    }
+    else if ((phaseMs >= 3400) && (phaseMs < 3600))
+    {
+      ignitionValue = 2; /* Invalid enum */
+    }
+    if (phaseMs >= 4200)
+    {
+      maskValue = 0;
+    }
+  }
+
+  sendVehicle(rawSpeed, ignitionValue, vehicleDlc);
+  if (sendDoorFrame)
+  {
+    sendDoors(maskValue, doorsDlc);
+  }
+  if ((step % 5) == 0)
+  {
+    write("Stimulus scenario=%d phase=%d ms, rawSpeed=%d ignition=%d doors=%d sendDoors=%d",
+          selectedScenario, phaseMs, rawSpeed, ignitionValue,
+          maskValue, sendDoorFrame);
+  }
+  step++;
+  if (step >= 50)
+  {
+    step = 0;
+  }
+}
+
+on start
+{
+  selectScenario(1);
+  write("Door alert demo keys: 1 normal, 2 thresholds, 3 loss, 4 malformed/recovery.");
+}
+
+on timer stimulusTick
+{
+  emitScenarioStep();
+  setTimer(stimulusTick, 100);
+}
+
+on key '1'
+{
+  selectScenario(1);
+}
+
+on key '2'
+{
+  selectScenario(2);
+}
+
+on key '3'
+{
+  selectScenario(3);
+}
+
+on key '4'
+{
+  selectScenario(4);
+}
+
+on preStop
+{
+  cancelTimer(stimulusTick);
+}

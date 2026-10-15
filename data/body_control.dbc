@@ -1,0 +1,47 @@
+VERSION "Educational door warning 0.1"
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+    BA_DEF_DEF_
+
+BS_:
+
+BU_: ScenarioDriver DoorAlert Cluster
+
+BO_ 256 VehicleStatus: 8 ScenarioDriver
+ SG_ VehicleSpeed : 0|16@1+ (0.01,0) [0|250] "km/h" DoorAlert
+ SG_ IgnitionOn : 16|8@1+ (1,0) [0|1] "" DoorAlert
+
+BO_ 257 DoorStatus: 8 ScenarioDriver
+ SG_ DoorFL : 0|1@1+ (1,0) [0|1] "" DoorAlert
+ SG_ DoorFR : 1|1@1+ (1,0) [0|1] "" DoorAlert
+ SG_ DoorRL : 2|1@1+ (1,0) [0|1] "" DoorAlert
+ SG_ DoorRR : 3|1@1+ (1,0) [0|1] "" DoorAlert
+
+BO_ 512 AlertStatus: 8 DoorAlert
+ SG_ Warning : 0|8@1+ (1,0) [0|1] "" Cluster
+ SG_ DataFault : 8|8@1+ (1,0) [0|1] "" Cluster
+ SG_ Reason : 16|8@1+ (1,0) [1|6] "" Cluster
+
+CM_ "Teaching-only CAN signal simulation; not an OEM or vehicle safety specification.";
+CM_ BO_ 256 "Classic CAN standard ID 0x100. Remaining bytes unused. Invalid speed or ignition invalidates vehicle input.";
+CM_ BO_ 257 "Classic CAN standard ID 0x101. Byte0 bits4..7 must be zero; remaining bytes unused.";
+CM_ BO_ 512 "Classic CAN standard ID 0x200. DataFault=1 distinguishes unavailable data from a confirmed no-warning state.";
+VAL_ 256 IgnitionOn 0 "Off" 1 "On";
+VAL_ 257 DoorFL 0 "Closed" 1 "Open";
+VAL_ 257 DoorFR 0 "Closed" 1 "Open";
+VAL_ 257 DoorRL 0 "Closed" 1 "Open";
+VAL_ 257 DoorRR 0 "Closed" 1 "Open";
+VAL_ 512 Warning 0 "Inactive" 1 "Active";
+VAL_ 512 DataFault 0 "Available" 1 "Unavailable";
+VAL_ 512 Reason 1 "DataUnavailable" 2 "IgnitionOff" 3 "DoorsClosed" 4 "BelowThreshold" 5 "Debouncing" 6 "WarningActive";
+
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_ "GenMsgCycleTime" BO_ 256 100;
+BA_ "GenMsgCycleTime" BO_ 257 100;
+BA_ "GenMsgCycleTime" BO_ 512 10;
